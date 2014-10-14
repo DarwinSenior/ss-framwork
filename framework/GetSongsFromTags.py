@@ -1,29 +1,35 @@
-import MySQLdb
 __author__ = 'Kevin Renner'
 
-#This code accepts a list of tags as input, and returns a list of songs that fit the tag.
-#Eventually it will be able to rank the songs in order of what song fit the most tags
+#Gets tag data from a CSV file
+#Returns dictionary with song names as keys and tags as values
+def getData():
+    data = dict()
+    file = open("data")
+    lines = file.readlines()
+    for line in lines:
+        songData = line.strip().split(",")[1:]
+        name = line.split(",")[0]
+        data[name] = songData
+    file.close()
+    return data
 
-db = MySQLdb.connect("localhost", "root", "password", "test") #MySQL connection information. In the real application this can be moved to another file
-cursor = db.cursor()
-
-def getSongsFromTags(tags):
-    songList=[]
-    newSongList = []
+#Searches for the songs that correspond to a tag
+#Returns a dictionary with song names as keys and the number of tags the song matches as the values
+def getSongs(tags):
+    data = getData()
+    songList = dict()
     for tag in tags:
-        sql = "SELECT * FROM '%s'"; "%(tag)"
-        cursor.execute(sql)
-        results = cursor.fetchall()
-        for row in results:
-            songList.append(results[row])
-    for songA in songList:
-        repeat = 0
-        for songB in songList:
-            if songA == songB:
-                repeat += 1
-        if repeat <= 1:
-            newSongList.append(songA)
-    return newSongList
+        for name in data:
+            line = data[name]
+            if tag in line:
+                if name in songList.keys():
+                    songList[name] += 1
+                else:
+                    songList[name] = 1
 
+    return songList
 
-
+#Runs the tag search using an array 'tags' of tags
+if __name__=="__main__":
+    tags = {'Pop', 'Orchestra', 'Loud'}
+    print(getSongs(tags))
