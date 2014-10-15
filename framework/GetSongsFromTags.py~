@@ -41,4 +41,4 @@ if __name__=="__main__":
     tags = [x for x in pattern.split(rInput) if x]
     #tags = {'Pop', 'Orchestra', 'Loud'}
     for w in sorted(getSongs(tags), key=getSongs(tags).get, reverse=True):
-        print w, getSongs(tags)[w]
+        print w, d[w]
