@@ -38,7 +38,7 @@ if __name__=="__main__":
     print "Enter tags seperated by a comma\n"
     rInput = raw_input()
     pattern = re.compile("^\s+|\s*,\s*|\s+$")
-    tags = [x for x in pattern.split(rInput) if x]
+    tags = [x.capitalize() for x in pattern.split(rInput) if x]
     #tags = {'Pop', 'Orchestra', 'Loud'}
     for w in sorted(getSongs(tags), key=getSongs(tags).get, reverse=True):
         print w, getSongs(tags)[w]
