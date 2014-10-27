@@ -3,7 +3,7 @@ __author__ = 'Kevin Renner & HKJ'
 import re
 import operator
 import os
-import songtags.dbinteract
+#import songtags.dbinteract
 
 
 #Gets tag data from a CSV file
@@ -21,8 +21,8 @@ def getData():
     return data
 
 
-def getDBData():
-    return songtags.dbinteract.get_songs_and_tags_dict()
+#def getDBData():
+ #   return songtags.dbinteract.get_songs_and_tags_dict()
 
 
 def getScoreData():
@@ -33,14 +33,14 @@ def getScoreData():
     keysX = line[0].strip().split(",")
     keysY = list()
     for l in line:
-        keysY.append(l.strip().split(",")[1])
-    i = 0; #Incrementing value for following for loop
-    j = 0;
+        keysY.append(l.strip().split(",")[0])
+    i = 0 #Incrementing value for following for loop
     for keyX in keysX: #Still trying to get this loop to work, should save the table of values using the column and line headers as a key in a tuple
-        i += 1
+        j = 0
         for keyY in keysY:
-            j += 1
             scoreData[(keyX, keyY)] = line[i].strip().split(",")[j]
+            j += 1
+        i += 1
 
 
 #Searches for the songs that correspond to a tag
@@ -67,10 +67,11 @@ def compareToTag(songList, data, name, tag):
 
 #Runs the tag search using an array 'tags' of tags
 if __name__=="__main__":
-    print "Welcome to song search via tag\n"
-    print "Enter tags seperated by a comma\n"
-    rInput = raw_input()
-    pattern = re.compile("^\s+|\s*,\s*|\s+$")
-    tags = [x.capitalize() for x in pattern.split(rInput) if x]
-    for w in sorted(getSongs(tags), key=getSongs(tags).get, reverse=True):
-        print w, getSongs(tags)[w]
+    #print "Welcome to song search via tag\n"
+    #print "Enter tags seperated by a comma\n"
+    #rInput = raw_input()
+    #pattern = re.compile("^\s+|\s*,\s*|\s+$")
+    #tags = [x.capitalize() for x in pattern.split(rInput) if x]
+    #for w in sorted(getSongs(tags), key=getSongs(tags).get, reverse=True):
+    #    print w, getSongs(tags)[w]
+    getScoreData()
