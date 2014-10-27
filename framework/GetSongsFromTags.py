@@ -1,29 +1,52 @@
 __author__ = 'Kevin Renner & HKJ'
 
 import re
-import operator	
+import operator
+import os
+import songtags.dbinteract
+
 
 #Gets tag data from a CSV file
 #Returns dictionary with song names as keys and tags as values
 def getData():
     data = dict()
-    file = open("data")
-    lines = file.readlines()
+    pwd = os.path.dirname(__file__)  # get current directory
+    datafile = open(os.path.join(pwd, "data"))
+    lines = datafile.readlines()
     for line in lines:
         songData = line.strip().split(",")[1:]
         name = line.split(",")[0]
         data[name] = songData
-    file.close()
+    datafile.close()
     return data
 
+
+def getDBData():
+    return songtags.dbinteract.get_songs_and_tags_dict()
+
+
 def getScoreData():
-    file = open("tagscore.csv")
+    scoreData = dict()
+    pwd = os.path.dirname(__file__)
+    file = open(os.path.join(pwd, "tagscore.csv"))
+    line = file.readlines()
+    keysX = line[0].strip().split(",")
+    keysY = list()
+    for l in line:
+        keysY.append(l.strip().split(",")[1])
+    i = 0; #Incrementing value for following for loop
+    j = 0;
+    for keyX in keysX: #Still trying to get this loop to work, should save the table of values using the column and line headers as a key in a tuple
+        i += 1
+        for keyY in keysY:
+            j += 1
+            scoreData[(keyX, keyY)] = line[i].strip().split(",")[j]
 
 
 #Searches for the songs that correspond to a tag
 #Returns a dictionary with song names as keys and the number of tags the song matches as the values
 def getSongs(tags):
-    data = getData()
+    data = getData() # You can also use getDBData() now to pull from the database
     songList = dict()
     for tag in tags:
         for name in data:
