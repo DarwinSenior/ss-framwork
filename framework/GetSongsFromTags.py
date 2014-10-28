@@ -41,6 +41,7 @@ def getScoreData():
             scoreData[(keyX, keyY)] = line[i].strip().split(",")[j]
             j += 1
         i += 1
+    return scoreData
 
 
 #Searches for the songs that correspond to a tag
@@ -74,4 +75,5 @@ if __name__=="__main__":
     #tags = [x.capitalize() for x in pattern.split(rInput) if x]
     #for w in sorted(getSongs(tags), key=getSongs(tags).get, reverse=True):
     #    print w, getSongs(tags)[w]
-    getScoreData()
+    scoreData = getScoreData()
+    print scoreData[("Leonard Berstein", 'Orchestra')]
